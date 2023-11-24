@@ -1,50 +1,44 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
-import { fileTypeList } from "./constant/constant";
-import { FileType } from "./constant/type";
-import template from "./template/template";
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+import * as fs from "fs";
+import * as path from "path";
+import { exec } from "child_process";
+
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand(
       "createFile.menusCreateFile",
       async (event) => {
         try {
-          // get folder path
-          const path = event.path;
-
-          // select file type
-          const fileType: FileType | undefined | string  = await vscode.window.showQuickPick(fileTypeList, {
-            placeHolder: "Select file type",
+          // 输入文件名
+          const fileName = await vscode.window.showInputBox({
+            placeHolder: "请输入文件名",
           });
-
-          // input file name when fileType is selected
-          let fileName: string | undefined;
-          if (fileType) {
-            fileName = await vscode.window.showInputBox({
-              placeHolder: "Input file name",
-            });
-          } else {
-            return;
+          // 操作文件夹的路径
+          const actionPath = event.path;
+          // 根路径
+          const rootPath = vscode.workspace.workspaceFolders![0].uri.path;
+          // 读取 rootPath.aoviz-tmp 文件夹下的所有文件夹
+          const tmpPath = path.resolve(rootPath, '.aoviz-tmp');
+          const tmpDirs = fs.readdirSync(tmpPath);
+          // 选择文件类型
+          const fileType = await vscode.window.showQuickPick(tmpDirs, {
+            placeHolder: "请选择文件类型",
+          });
+          // 读取文件类型下 metadate 文件夹下的所有文件名
+          const metadataPath = path.resolve(tmpPath, fileType!, 'metadata');
+          const files = fs.readdirSync(metadataPath);
+          // 去掉 .json 后缀
+          const metaDates = files.map((file) => file.split('.')[0]);
+          const metaDate = await vscode.window.showQuickPick(metaDates, {
+            placeHolder: "请选择文件元数据",
+          });
+          // 执行指令  aoviz code-gen t -t ${fileType} -m ${fileName} -o ${actionPath}
+          exec(`cd ${actionPath} && aoviz code-gen ${fileName} -t ${fileType} -m ${metaDate} -o ${actionPath}`, (err, stdout, stderr) => {
+            if (err) {
+              throw err;
+            }
           }
-
-          // create file when fileName is input
-          if (fileName && fileType) {
-            // create file
-            let filePath = `${path}/${fileName}.${fileType}`;
-            await vscode.workspace.fs.writeFile(
-              vscode.Uri.file(filePath),
-              // read file content from template
-              Buffer.from(template[fileType as FileType])
-            );
-            // show file in editor
-            const document = await vscode.workspace.openTextDocument(
-              vscode.Uri.file(filePath)
-            );
-            await vscode.window.showTextDocument(document);
-          }
+          );
         } catch (err) {
           if (err instanceof Error) {
             vscode.window.showErrorMessage(err.message);

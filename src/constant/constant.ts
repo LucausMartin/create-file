@@ -1,7 +1,6 @@
-import { FileTypeList } from "./type";
-const fileTypeList: FileTypeList = [
-  "html",
-  "tsx"
+const fileTypeList = [
+  "list",
+  "modal"
 ];
 
 export { fileTypeList };
