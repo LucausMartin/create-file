@@ -1,29 +1,7 @@
-const fileTypeList = [
-  "js",
-  "jsx",
-  "ts",
-  "tsx",
+import { FileTypeList } from "./type";
+const fileTypeList: FileTypeList = [
   "html",
-  "css",
-  "less",
-  "scss",
-  "json",
-  "md",
-  "txt",
-  "xml",
-  "yml",
-  "yaml",
-  "gitignore",
-  "gitkeep",
-  "gitattributes",
-  "editorconfig",
-  "babelrc",
-  "eslintrc",
-  "prettierrc",
-  "prettierignore",
-  "stylelintrc",
-  "stylelintignore",
-  "vscodeignore",
+  "tsx"
 ];
 
 export { fileTypeList };
