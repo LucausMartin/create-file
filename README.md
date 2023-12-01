@@ -1,4 +1,4 @@
-# create-file README
+# create-file
 
 > The extension is developed for datagrand company.
 
@@ -10,4 +10,21 @@ Before using the plugin you need to install two npm packages ```@aoviz/cli``` (g
 
 ![Usage](/images/use.gif)
 
+## Features
+
+* After install  ```@aoviz/cli``` and ```@aoviz/code-gen``` 
+Right click on the folder and select Create file option to create file
+
 ## Release Notes
+
+### 1.0.0
+
+Complate development
+
+### 1.0.1
+
+create file with ```@aoviz/cli``` and ```@aoviz/code-gen```
+
+### 1.0.2
+
+change README
