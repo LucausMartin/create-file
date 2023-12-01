@@ -3,6 +3,11 @@ import * as fs from "fs";
 import * as path from "path";
 import { exec } from "child_process";
 
+// 默认模版
+const templates: { [key: string]: string[] } = {
+  list: ['example']
+};
+
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand(
@@ -16,8 +21,8 @@ export function activate(context: vscode.ExtensionContext) {
           // 读取 rootPath.aoviz-tmp 文件夹下的所有文件夹
           const tmpPath = path.resolve(rootPath, ".aoviz-tmp");
           const tmpDirs = fs.readdirSync(tmpPath);
-          // 选择文件类型
-          const fileType = await vscode.window.showQuickPick(tmpDirs, {
+
+          const fileType = await vscode.window.showQuickPick([...new Set([...tmpDirs, ...Object.keys(templates)])], {
             placeHolder: "请选择文件类型",
           });
           if (!fileType) {
@@ -25,10 +30,11 @@ export function activate(context: vscode.ExtensionContext) {
           }
           // 读取文件类型下 metadate 文件夹下的所有文件名
           const metadataPath = path.resolve(tmpPath, fileType!, "metadata");
+
           const files = fs.readdirSync(metadataPath);
           // 去掉 .json 后缀
           const metaDates = files.map((file) => file.split(".")[0]);
-          const metaDate = await vscode.window.showQuickPick(metaDates, {
+          const metaDate = await vscode.window.showQuickPick([...new Set([...metaDates, ...templates[fileType]])], {
             placeHolder: "请选择文件数据",
           });
           if (!metaDate) {
