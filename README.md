@@ -28,3 +28,7 @@ create file with ```@aoviz/cli``` and ```@aoviz/code-gen```
 ### 1.0.2
 
 change README
+
+### 1.0.3
+
+Add icon

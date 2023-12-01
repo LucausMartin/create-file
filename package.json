@@ -2,12 +2,13 @@
   "name": "create-file",
   "displayName": "Create tempalte file for datagrand",
   "description": "generate files with templates in just a few steps",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "publisher": "Lucaus",
   "repository": {
     "type": "git",
     "url": "https://github.com/LucausMartin/create-file.git"
   },
+  "icon": "images/icon.png",
   "engines": {
     "vscode": "^1.84.0"
   },
