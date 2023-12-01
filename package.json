@@ -1,8 +1,9 @@
 {
   "name": "create-file",
-  "displayName": "Create file",
+  "displayName": "Create tempalte file for datagrand",
   "description": "generate files with templates in just a few steps",
-  "version": "0.0.1",
+  "version": "0.0.3",
+  "publisher": "Lucaus",
   "engines": {
     "vscode": "^1.84.0"
   },
@@ -53,5 +54,6 @@
     "typescript": "^5.2.2",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4"
-  }
+  },
+  "gitHead": "3ca24cc2f04f21c14014d7b1ffed26cfce4409dc"
 }

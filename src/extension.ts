@@ -29,7 +29,7 @@ export function activate(context: vscode.ExtensionContext) {
           // 去掉 .json 后缀
           const metaDates = files.map((file) => file.split(".")[0]);
           const metaDate = await vscode.window.showQuickPick(metaDates, {
-            placeHolder: "请选择文件元数据",
+            placeHolder: "请选择文件数据",
           });
           if (!metaDate) {
             return;
@@ -38,6 +38,9 @@ export function activate(context: vscode.ExtensionContext) {
           const fileName = await vscode.window.showInputBox({
             placeHolder: "请输入文件名",
           });
+          if (fileName === "") {
+            vscode.window.showErrorMessage("🐛文件名不能为空");
+          }
           if (!fileName) {
             return;
           }
@@ -47,6 +50,16 @@ export function activate(context: vscode.ExtensionContext) {
             (err, stdout, stderr) => {
               if (stderr) {
                 vscode.window.showErrorMessage(stderr);
+              }
+              if (stdout) {
+                vscode.window.showInformationMessage(stdout);
+                if (stdout.search("生成成功")) {
+                  // 在编辑区打开文件
+                  const filePath = path.resolve(actionPath, `${fileName}.tsx`);
+                  vscode.workspace.openTextDocument(filePath).then((doc) => {
+                    vscode.window.showTextDocument(doc);
+                  });
+                }
               }
             }
           );
